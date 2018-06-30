@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context" 
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- MYSQL 的慢日志 -->
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+    	<property name="mergeSql" value="true" />
+        <property name="slowSqlMillis" value="10000" />
+        <property name="logSlowSql" value="true" />
+    </bean>
+	<!-- 数据库配置连接池 -->
+    <bean id="appSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${app.jdbc.driverClass}" />
+        <property name="url" value="${app.jdbc.jdbcUrl}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull" />
+        <property name="username" value="${app.jdbc.username}" />
+        <property name="password" value="${app.jdbc.password}" />
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="3" />
+        <property name="minIdle" value="3" />
+        <property name="maxActive" value="20" />
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <!--SQL查询,用来验证从连接池取出的连接,在将连接返回给调用者之前.如果指定,则查询必须是一个SQL SELECT并且必须返回至少一行记录  -->
+        <property name="validationQuery" value="SELECT 'x'" />
+        <!-- 指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除. -->
+        <property name="testWhileIdle" value="true" />
+        <!-- TestOnBorrow  true  指明是否在从池中取出连接前进行检验,如果检验失败,T则从池中去除连接并尝试取出另一个. -->
+        <property name="testOnBorrow" value="false" />
+        <!-- testOnReturn false  指明是否在归还到池中前进行检验 -->
+        <property name="testOnReturn" value="false" />
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="stat" />
+        <property name="connectionProperties" value="druid.stat.mergeSql=true" />
+        <property name="useGlobalDataSourceStat" value="true" />
+    </bean>
+	<!-- appSessionFactory dao层 工厂 -->
+    <bean id="appSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="appSource" />
+        <property name="configLocation" value="classpath:/mybatis/mybatis-config-mappings.xml" />
+        <property name="typeAliasesPackage" value="com.dairuijie.mgr.pojo"></property>
+        <property name="mapperLocations">
+            <array>
+                <value>classpath:/mybatis/system/*.xml</value>
+            </array>
+        </property>
+    </bean>
+
+<!--     <bean id="paobutangmapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	        <property name="basePackage" value="com.paobutang.manage.base.dao" />
+	        <property name="sqlSessionFactoryBeanName" value="paobutangSessionFactory" />
+    	</bean>
+ -->
+   <!--  <bean id="appSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="appSessionFactory" />
+        <constructor-arg index="1" value="BATCH" />
+    </bean>
+
+    <bean id="baseDao" class="com.quzubuluo.manage.base.dao.BaseDao">
+        <property name="sqlSessionFactory" ref="appSessionFactory" />
+        <property name="sqlSessionTemplate" ref="appSqlSessionTemplate" />
+    </bean> -->
+    
+      <bean id="appmapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.dairuijie.mgr.dao" />
+        <property name="sqlSessionFactoryBeanName" value="appSessionFactory" />
+    </bean>
+    
+</beans>

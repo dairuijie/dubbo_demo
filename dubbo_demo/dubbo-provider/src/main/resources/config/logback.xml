@@ -1,0 +1,5 @@
+<configuration debug="true" scan="true" scanPeriod="5 seconds">
+    <contextName>qzbl_manage</contextName>
+    <!-- 默认为local -->
+    <include resource="config/logback-${envTarget:-local}.xml" />
+</configuration>

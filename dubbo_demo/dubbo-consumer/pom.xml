@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>drj.rui.jie</groupId>
+		<artifactId>dubbo_core</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../dubbo_core/pom.xml</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId> dubbo-consumer</artifactId>
+	<packaging>war</packaging>
+	<name> dubbo-consumer Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<dependency>
+			<groupId>com.dairuijie.app</groupId>
+			<artifactId>com.dairuijie.app.api</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<type>jar</type>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/dubbo-provider.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName> dubbo-consumer</finalName>
+	</build>
+</project>
