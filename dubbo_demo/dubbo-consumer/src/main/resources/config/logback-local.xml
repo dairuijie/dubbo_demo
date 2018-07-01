@@ -5,7 +5,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOG_PATH}/qzbl_service.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${LOG_PATH}/qzbl_service.log.%d{yyyy-MM-dd}
+			<fileNamePattern>${LOG_PATH}/dubbo-consumer.log.%d{yyyy-MM-dd}
 			</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
